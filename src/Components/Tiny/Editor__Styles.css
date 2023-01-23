@@ -1,0 +1,21 @@
+section {
+  padding: 40px;
+}
+.editor {
+  margin: 20px;
+}
+
+.btn1,
+.btn2 {
+  float: right;
+  margin: 20px;
+  padding: 15px;
+  background-color: royalblue;
+  color: azure;
+  cursor: pointer;
+
+}
+
+.btn2{
+    background-color: red;
+}
