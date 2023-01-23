@@ -2,13 +2,60 @@ import React, { useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import "../Tiny/Editor__Styles.css"
 
-export default function EditorComponent() {
+async function verifyPermissions(handle) {
+  if (await handle.queryPermission({ mode: 'readwrite' }) === 'granted') {
+    return true;
+  }
+  if (await handle.requestPermission({ mode: 'readwrite' }) === 'granted') {
+    return true;
+  }
+  return false;
+}
+
+export default function EditorComponent(props) {
+  const fileHandle = null;
+
   const editorRef = useRef(null);
   const log = () => {
     if (editorRef.current) {
       console.log(editorRef.current.getContent());
     }
   };
+
+  async function saveFile() {
+  var saveValue = editorRef.current.getContent();
+  if (!fileHandle) {
+    try {
+      fileHandle = await window.showSaveFilePicker({
+        suggestedName: 'test_uniforme_azul',
+        types: [{
+          description: 'TEXTO PLANO!!',
+          accept: {'text/html': ['.html']},
+        }],
+      });
+    } catch (e) {
+      // might be user canceled
+    }
+  }
+  if (!fileHandle || !await verifyPermissions(fileHandle)) {
+    return;
+  }
+  let writableStream = await fileHandle.createWritable();
+  await writableStream.write(saveValue);
+  await writableStream.close();
+}
+
+  const save = ev => {
+    // console.log(ev);
+    ev.preventDefault();
+    // saveFile();
+
+    const result = editorRef.current.getContent();
+    // console.log(result);
+
+    props.editedResponse(result);
+
+  }
   const isSmallScreen = window.matchMedia("(max-width: 1023.5px)").matches;
 
   const useDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -16,11 +63,12 @@ export default function EditorComponent() {
   return (
     <section>
     <h1>Hola Admin, vas a editar: "insertar test"</h1>
+    <form>
       <Editor
         apiKey="7v1e6x9jdvuh68elzfbx9y82ipi3g9akrjzhlh8kc0cx79gg"
         onInit={(evt, editor) => (editorRef.current = editor)}
         // INVESTIGAR COMO VOLCAR LA INFO DE LOS TEST A LA CAJA DE TEXTO 
-        initialValue="<p>BIENVENIDO, DIVIÉRTETE EDITANTO TESTS</p>"
+        initialValue={props.defaultValue}
         init={{
           height: 900,
           editimage_cors_hosts: ["picsum.photos"],
@@ -66,7 +114,7 @@ export default function EditorComponent() {
           autosave_restore_when_empty: false,
           autosave_retention: "2m",
           image_advtab: true,
-          save_enablewhendirty: false,
+          save_enablewhendirty: true,
 //           save_onsavecallback: () => {
 //     console.log('Saved');
 //   },
@@ -136,10 +184,12 @@ export default function EditorComponent() {
         }}
 
       />
+      <button name="submitbtn" onClick={save}>GUARDAR YESS</button>
+      </form>
 
       {/* Necesitamos ver qué es y para qué  funciona el useRef -- lineas 6-11. Y darle la funncionalidad de guardar cambios. */}
-      <button className="btn1" onClick={log}>Log editor content</button>
-      <button className="btn2" onClick={log}>Guardar cambios</button>
+      {/* <button className="btn1" onClick={log}>Log editor content</button>
+      <button className="btn2 submitbtn" onClick={log}>Guardar cambios</button> */}
 
     </section>
   );
