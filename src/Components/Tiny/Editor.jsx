@@ -19,7 +19,8 @@ export default function EditorComponent() {
       <Editor
         apiKey="7v1e6x9jdvuh68elzfbx9y82ipi3g9akrjzhlh8kc0cx79gg"
         onInit={(evt, editor) => (editorRef.current = editor)}
-        initialValue="<p>BIENVENIDO, DIVIERTETE EDITANTO TEXTO</p>"
+        // INVESTIGAR COMO VOLCAR LA INFO DE LOS TEST A LA CAJA DE TEXTO 
+        initialValue="<p>BIENVENIDO, DIVIÉRTETE EDITANTO TESTS</p>"
         init={{
           height: 900,
           editimage_cors_hosts: ["picsum.photos"],
@@ -130,13 +131,14 @@ export default function EditorComponent() {
           noneditable_class: "mceNonEditable",
           toolbar_mode: "sliding",
           contextmenu: "link image table",
-          
           skin: useDarkMode ? "oxide-dark" : "oxide",
           content_css: useDarkMode ? "dark" : "default",
           //   content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }",
         }}
 
       />
+
+      {/* Necesitamos ver qué es y para qué  funciona el useRef -- lineas 6-11. Y darle la funncionalidad de guardar cambios. */}
       <button className="btn1" onClick={log}>Log editor content</button>
       <button className="btn2" onClick={log}>Guardar cambios</button>
 
