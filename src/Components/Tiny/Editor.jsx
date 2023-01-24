@@ -86,6 +86,8 @@ export default function EditorComponent(props) {
             "fullscreen",
             "help",
             "image",
+            "imagetools",
+            "editimage",
             "importcss",
             "insertdatetime",
             "link",
@@ -104,7 +106,7 @@ export default function EditorComponent(props) {
             "wordcount",
           ],
           toolbar:
-            "undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl",
+            "undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify lineheight | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile quickimage media template link anchor codesample | ltr rtl",
           content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
           toolbar_sticky: false,
           toolbar_sticky_offset: isSmallScreen ? 102 : 108,
@@ -185,6 +187,7 @@ export default function EditorComponent(props) {
 
       />
       <button name="submitbtn" onClick={save}>GUARDAR YESS</button>
+      <button className="btn2" onClick={log}>Guardar cambios</button>
       </form>
 
       {/* Necesitamos ver qué es y para qué  funciona el useRef -- lineas 6-11. Y darle la funncionalidad de guardar cambios. */}
